@@ -35,6 +35,19 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   height: 50px;
+  padding: 0px 20px;
+}
+
+nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 nav ul {
@@ -44,24 +57,46 @@ nav ul {
   display: flex;
 }
 
-nav ul a {
+nav a {
   text-decoration: none;
   margin-right: 25px;
   font-size: 18px;
 }
 
-nav ul a:hover {
+nav a:hover {
   color: #f5f5f5;
 }
 
-nav ul a span {
+nav a span {
   margin-left: 5px;
   position: relative;
   top: -1px;
 }
 
-nav ul li:last-child a {
+nav li:last-child a {
   margin-right: 0px;
+}
+
+nav .user {
+  position: relative;
+  cursor: pointer;
+}
+
+nav .user img {
+  width: 40px;
+}
+
+nav .user_wrapper {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: absolute;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  left: -12px;
 }
 
 .news {
@@ -669,7 +704,126 @@ input[type=file] {
   font-size: 15px;
 }
 
-h1{
+h1 {
   text-align: center;
+}
+
+.auntification {
+  width: 100%;
+  height: 100vh;
+  background: -webkit-gradient(linear, left top, right top, from(#cfecd0), color-stop(#a0cea7), to(#9ec0db));
+  background: linear-gradient(90deg, #cfecd0, #a0cea7, #9ec0db);
+}
+
+.auntification_wrapper {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  -webkit-transform: translate(-50%, -40%);
+          transform: translate(-50%, -40%);
+}
+
+.auntification_wrapper .buttons {
+  margin-bottom: 31px;
+}
+
+.auntification_wrapper .buttons button {
+  cursor: pointer;
+  display: inline-block;
+  width: 15em;
+  font-size: 80%;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: #2e7ebd 0 1px 2px;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1.1;
+  white-space: pre-line;
+  padding: .7em 0;
+  border: 1px solid;
+  border-color: #60a3d8 #2970a9 #2970a9 #60a3d8;
+  border-radius: 6px;
+  outline: none;
+  background: #60a3d8 -webkit-gradient(linear, left top, left bottom, from(#89bbe2), color-stop(50%, #60a3d8), to(#378bce));
+  background: #60a3d8 linear-gradient(#89bbe2, #60a3d8 50%, #378bce);
+  -webkit-box-shadow: inset rgba(255, 255, 255, 0.5) 1px 1px;
+          box-shadow: inset rgba(255, 255, 255, 0.5) 1px 1px;
+}
+
+.auntification_wrapper .buttons button:first-line {
+  font-size: 170%;
+  font-weight: 700;
+}
+
+.auntification_wrapper .buttons button:hover {
+  color: white;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#9dc7e7), color-stop(50%, #74afdd), to(#378bce));
+  background-image: linear-gradient(#9dc7e7, #74afdd 50%, #378bce);
+}
+
+.auntification_wrapper .buttons button:active {
+  color: white;
+  border-color: #2970a9;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#5796c8), to(#6aa2ce));
+  background-image: linear-gradient(#5796c8, #6aa2ce);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.auntification_wrapper form {
+  width: 310px;
+  margin: 0 auto;
+}
+
+.auntification_wrapper form p {
+  position: relative;
+  margin-top: 10px;
+}
+
+.auntification_wrapper form input {
+  background: none;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid black;
+  border-radius: 4px;
+  padding: 4px 8px;
+  position: absolute;
+  right: 0;
+  width: 80%;
+}
+
+.auntification_wrapper form label {
+  font-style: italic;
+  font-weight: 900;
+}
+
+.auntification_wrapper form button {
+  margin: 18px auto;
+  display: block;
+  width: 60%;
+  border: none;
+  outline: none;
+  padding: 10px 0px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.auntification_wrapper .login {
+  display: none;
+}
+
+.auntification_wrapper .reg {
+  display: none;
+}
+
+.auntification_wrapper ul {
+  width: 310px;
+  list-style: none;
+  margin-top: 12px;
+}
+
+.auntification_wrapper .error {
+  width: 310px;
+  text-align: center;
+  color: #a37019;
 }
 /*# sourceMappingURL=style.css.map */

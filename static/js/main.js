@@ -14,6 +14,85 @@ textareas.forEach((item)=>{
     }
 })
 
+try{
+    //Открыть меню пользователя
+    let user = document.querySelector(".user"),
+        user_wrapper = user.querySelector(".user_wrapper")
+
+    user.onclick=()=>{
+        if (user_wrapper.style.display == "")
+            user_wrapper.style.display = "flex"
+        else
+            user_wrapper.style.display = ""
+    }
+}catch{}
+
+try{
+    //Авторизация и регистрация
+    let login = document.querySelector(".login"),
+        reg = document.querySelector(".reg"),
+        bts = document.querySelectorAll(".buttons button");
+
+    bts[0].onclick=()=>{
+        reg.style.display = "none"
+        login.style.display = "block"
+    }
+
+    let login_form = login.querySelector('form');
+    login_form.onsubmit=(e)=>{
+        e.preventDefault();
+        fetch(login_form.action, {
+            method: "POST",
+            body: new FormData(login_form),
+        })
+        .then(response => response.json())
+        .then(function(json) { 
+            console.log(json)
+            if (json.success)
+                window.location.href = json.success
+            else{
+                let error = json['errors']['__all__'][0],
+                    block = login_form.querySelectorAll('p');
+                block = block[block.length-1]
+                block.insertAdjacentHTML("beforeend",`<ul><li class="error">${error}</li></ul>`);
+            }
+        })
+    }
+
+    bts[1].onclick=()=>{
+        login.style.display = "none"
+        reg.style.display = "block"
+    }
+
+    let reg_form = reg.querySelector('form');
+    reg_form.onsubmit=(e)=>{
+        e.preventDefault();
+        fetch(reg_form.action, {
+            method: "POST",
+            body: new FormData(reg_form),
+        })
+        .then(response => response.json())
+        .then(function(json) { 
+            if (json.success)
+                window.location.href = json.success
+            else{
+                if (json['errors']['email']){
+                    let error = json['errors']['email'][0],
+                        block = reg_form.querySelectorAll('p');
+                    block = block[block.length-1]
+                    block.insertAdjacentHTML("beforeend",`<ul><li class="error">${error}</li></ul>`);
+                }
+                if (json['errors']['password']){
+                    let error = json['errors']['password'][0],
+                        block = reg_form.querySelectorAll('p');
+                    block = block[block.length-2]
+                    block.insertAdjacentHTML("beforeend",`<ul><li class="error">${error}</li></ul>`); 
+                }
+            }
+         })
+    }
+}catch{}
+
 
 try{
     //Показать форму выбора файла при нажатии на иконку

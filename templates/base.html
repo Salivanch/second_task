@@ -23,8 +23,14 @@
                             <i class="far fa-comment"></i>
                             <span>Мессенджер</span>
                         </a></li>
-                        <a href="{% url 'logout' %}">Выйти</a>
                     </ul>
+                    <div class="user">
+                        <img src="{{user.photo.url}}">
+                        <div class="user_wrapper">
+                            <a href="{% url 'profile' user.profile.slug %}">Профиль</a>
+                            <a href="{% url 'logout' %}">Выйти</a>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </div>
