@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="какое-то описание странички">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header_wrapper">
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'news' %}">
+                            <i class="far fa-file"></i>
+                            <span>Новости</span>
+                        </a></li>
+                        <li><a href="{% url 'chatlist' %}">
+                            <i class="far fa-comment"></i>
+                            <span>Мессенджер</span>
+                        </a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main>
+
+        {% block content %}
+        {% endblock content %}
+
+    </main>
+    <div class="overlay js-overlay-modal"></div>
+    <script src={% static 'js/main.js' %}></script>
+</body>
+</html>

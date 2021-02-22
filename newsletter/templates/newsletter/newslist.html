@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <section class="news">
+
+        <div class="container">
+            <div class="news_add">
+                <form action="{% url 'news-create' %}" class="form" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="area">
+                        <img src="{{user.photo.url}}" alt="">
+                        <i class="fas fa-file-upload top-17"></i>
+                        <textarea name="content" placeholder="Поделиться новостью..."></textarea>
+                    </div>
+                    <input name="attached_file" type="file">
+                    <div class="flex-end">
+                        <button type="submit" class="send">Поделиться</button>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="news_list">
+                {% for record in news %}
+                    <div class="news_detal">
+                        <div class="news">
+                            <div class="news_wrapper">
+                                {% if record.user %}
+                                    <div class="news_info">
+                                        <div class="info_wrapper">
+                                            <div class="info_photo">
+                                                <img src="{{record.user.photo.url}}" alt="">
+                                            </div>
+                                            <div class="info_text">
+                                                <a href="" class="user">{{record.user.get_full_name}}</a> 
+
+                                                {% comment %} add url to profile {% endcomment %}
+                                                
+                                                <span class="date">{{record.date}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="news_info">
+                                        <div class="info_wrapper">
+                                            <div class="info_photo">
+                                                <img src="static/img/robot.png" alt="">
+                                            </div>
+                                            <div class="info_text">
+                                                <a href="#" class="user">Бот</a>
+                                                <span class="date">{{record.date}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="news_content">
+                                    <div class="news_text">{{record.content}}</div>
+                                    {% if record.attached_file %}
+                                        <img src="{{record.attached_file.url}}" alt="">
+                                    {% endif %}
+                                </div>
+                                <hr>
+                                <div class="news_stats">
+                                    <div class="comment_stats">
+                                        <i class="far fa-comment-dots"></i>
+                                        <span>{{record.comments.all|length}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news_comment">
+                            <div class="comment news_wrapper">
+                                {% for comment in record.comments.all %}
+                                    <div class="news_info">
+                                        <div class="info_wrapper">
+                                            <div class="info_photo">
+                                                <img src="{{comment.user.photo.url}}" alt="">
+                                            </div>
+                                            <div class="info_text">
+                                                <a href="" class="user">{{comment.user.get_full_name}}</a>
+                                                <span class="date">{{comment.date}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="news_content">
+                                        <div class="news_text">{{comment.content}}</div>
+                                        {% if comment.attached_file %}
+                                            <img src="{{comment.attached_file.url}}" alt="">
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <form action="{% url 'comment-create' record.id %}" class="form" enctype="multipart/form-data" method="POST">
+                            {% csrf_token %}
+                            <div class="area">
+                                <img src="{{user.photo.url}}" alt="">
+                                <i class="fas fa-file-upload top-17"></i>
+                                <textarea name="content" placeholder="Оставить комментарий..."></textarea>
+                            </div>
+                            <input name="attached_file" type="file">
+                            <div class="flex-end">
+                                <button type="submit" class="send">Поделиться</button>
+                            </div>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </section>
+
+{% endblock content %}
