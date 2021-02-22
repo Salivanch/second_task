@@ -27,7 +27,9 @@ try{
     }
 }catch{}
 
-try{
+
+
+try{ //authenticate
     //Авторизация и регистрация
     let login = document.querySelector(".login"),
         reg = document.querySelector(".reg"),
@@ -94,7 +96,8 @@ try{
 }catch{}
 
 
-try{
+
+try{ //news + messenger
     //Показать форму выбора файла при нажатии на иконку
     let files = document.querySelectorAll('.fa-file-upload');
     files.forEach((item)=>{
@@ -107,6 +110,7 @@ try{
                 input.style.display = "block";
         }
     })
+
 
     //Показать кнопку отправки
     let forms = document.querySelectorAll(".form");
@@ -121,6 +125,7 @@ try{
                 btn.style.display = "block"
         }
     })
+
 
     //Показать комментарии при нажатии на иконку
     let btn_comment = document.querySelectorAll('.comment_stats');
@@ -137,7 +142,9 @@ try{
 }
 catch{}
 
-try{
+
+
+try{ //messenger
     //Развернуть или свернуть чат
     let chats = document.querySelectorAll(".chat_new");
     chats.forEach((item)=>{
@@ -174,6 +181,7 @@ try{
         }
     })
 
+
     //Показать или свернуть меню чата
     let btn_menu = document.querySelectorAll('.fa-align-justify');
     btn_menu.forEach((item)=>{
@@ -196,32 +204,36 @@ try{
             }
         }  
     })
+}catch{}
+
+
+
+try{ //messenger/chat/<slug>
+    //Скролл чата в самый низ
+    let body = document.querySelector(".chat_body");
+    body.scrollTop = body.scrollHeight;
 
 
     //Открыть и закрыть модальное окно
-    let all_btn = document.querySelectorAll('.all_users'),
-        add_btn = document.querySelectorAll('.add_user'),
+    let list_members = document.querySelector('.all_users'),
+        new_member = document.querySelector('.add_user'),
         overlay = document.querySelector('.js-overlay-modal'),
         modal = document.querySelectorAll('.modal'),
         closeButton = document.querySelectorAll('.js-modal-close');
 
-    all_btn.forEach((item)=>{
-        item.onclick=(e)=>{
-            getMembers(modal[0],e)
-            modal[0].classList.add('add');
-            overlay.classList.add('add');
-            document.querySelector('body').style.overflowY="hidden"
-        }; 
-    })
+    list_members.onclick=(e)=>{
+        getMembers(modal[0],e)
+        modal[0].classList.add('add');
+        overlay.classList.add('add');
+        document.querySelector('body').style.overflowY="hidden"
+    }; 
 
-    add_btn.forEach((item)=>{
-        item.onclick=(e)=>{
-            newMember(modal[1],e)
-            modal[1].classList.add('add');
-            overlay.classList.add('add');
-            document.querySelector('body').style.overflowY="hidden"
-        }; 
-    })
+    new_member.onclick=(e)=>{
+        newMember(modal[1],e)
+        modal[1].classList.add('add');
+        overlay.classList.add('add');
+        document.querySelector('body').style.overflowY="hidden"
+    }; 
 
     closeButton.forEach((item,i)=>{
         item.onclick=()=>{
@@ -239,24 +251,18 @@ try{
         document.querySelector('body').style.overflowY="auto"
     };
 
-    //Получение ссылки и очиска блока
-    function preparationRequest(modal, event, move){
-        let parent = event.target,
-            block = parent.closest('.chat_detal'),
-            form = block.querySelector(`.${move}`),
-            action = form.name
-        
-        let items = modal.querySelectorAll('.modal__content p')
-        if (items.length>0)
-            items.forEach((item)=>{ item.remove() })
-
-        return action
-
-    }
 
     //Отправить запрос на получение списка участников беседы
     function getMembers(modal, event){
-        let action = preparationRequest(modal, event, "members_list")
+        //Получение ссылки на запрос
+        let block = document.querySelector('.form-none'),
+            form = block.querySelector('.members_list'),
+            action = form.name
+        //Очистка модального окна
+        let items = modal.querySelectorAll('.modal__content p')
+        if (items.length>0)
+            items.forEach((item)=>{ item.remove() })
+        //Отправка запроса и добавление результата
         fetch(action, {
             method: "GET",
         })
@@ -276,9 +282,17 @@ try{
         })
     }
 
+
     //Отправить запрос на получение списка участников для добавления
     function newMember(modal, event){
-        let action = preparationRequest(modal, event, "members_add_list")
+        //Получение ссылки на запрос
+        let block = document.querySelector('.form-none'),
+            form = block.querySelector('.members_add_list'),
+            action = form.name
+        //Очистка модального окна
+        let items = modal.querySelectorAll('.modal__content p')
+        if (items.length>0)
+            items.forEach((item)=>{ item.remove() })
         fetch(action, {
             method: "GET",
         })
@@ -302,6 +316,7 @@ try{
         })
     }
 
+
     //Удалить собеседника
     function readyDeleteMember(last_event){
         let del_btn = document.querySelectorAll(".fa-times")
@@ -320,12 +335,12 @@ try{
                 })
                 .then(response => response.json())
                 .then(function(json) { 
-                    console.log(json)
                     block.remove()
                 })
             }
         })
     }
+
 
     //Добавить собеседника
     function readyAddMember(last_event){
@@ -345,7 +360,6 @@ try{
                 })
                 .then(response => response.json())
                 .then(function(json) { 
-                    console.log(json)
                     block.remove()
                 })
             }

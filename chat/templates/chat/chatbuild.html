@@ -1,0 +1,113 @@
+<div class="chat_detal">
+    <div class="chat_wrapper">
+        <div class="chat_new">
+            <div class="chat_info">
+                <div class="chat_wrapper">
+                    {% if chat.members.count == 1 %}
+                        <div class="chat_photo">
+                            <img src="{{chat.members.all.0.photo.url}}">
+                        </div>
+                        <div class="info_text">
+                            <div class="user">{{chat.members.all.0.get_full_name}}</div>
+                        </div>
+                    {% elif chat.members.count == 2 %}
+                        {% if chat.members.all.0 == user %}
+                            <div class="chat_photo">
+                                <img src="{{chat.members.all.1.photo.url}}">
+                            </div>
+                            <div class="info_text">
+                                <div class="user">{{chat.members.all.1.get_full_name}}</div>
+                            </div>
+                        {% else %}
+                            <div class="chat_photo">
+                                <img src="{{chat.members.all.0.photo.url}}">
+                            </div>
+                            <div class="info_text">
+                                <div class="user">{{chat.members.all.0.get_full_name}}</div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="chat_photo">
+                            <img src="{{chat.photo.url}}">
+                        </div>
+                        <div class="info_text">
+                            <div class="user">{{chat.title}}</div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="date">{{chat.last_message}}</div>
+            </div>
+            <div class="last_message">
+                {% if chat.recipient.all.last.content %}
+                    {{chat.recipient.all.last.content|truncatechars:40 }}
+                {% else %}
+                    <span class="last_photo">Фотография</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="chat_line"><a href="{% url 'chatdetail' chat.slug %}" >открыть в новой вкладке</a></div>
+    </div>
+    <div class="chat_messages">
+        <div class="chat_header">
+            {% if chat.members.count == 1 %}
+                <img src="{{chat.members.all.0.photo.url}}">
+                <span>{{chat.members.all.0.get_full_name}}</span>
+            {% elif chat.members.count == 2 %}
+                {% if chat.members.all.0 == user %}
+                    <img src="{{chat.members.all.1.photo.url}}">
+                    <span>{{chat.members.all.1.get_full_name}}</span>
+                {% else %}
+                    <img src="{{chat.members.all.0.photo.url}}">
+                    <span>{{chat.members.all.0.get_full_name}}</span>
+                {% endif %}
+            {% else %}
+                <img src="{{chat.photo.url}}">
+                <span>{{chat.title}}</span>
+            {% endif %}
+            <i class="fas fa-align-justify"></i>
+        </div>
+        <div class="chat_menu">
+            <div class="triangle"></div>
+            <div class="visibility"></div>
+            <div class="menu">
+                <p class="js-open-modal all_users"><i class="fas fa-user-alt"></i><span>Участники беседы</span></p>
+                <p class="js-open-modal add_user"><i class="fas fa-user-plus"></i><span>Добавить участника</span></p>
+                {% if chat.members.count > 2 %}
+                    <p class="js-open-modal change_design"><i class="fas fa-pencil-alt"></i><span>Изменить дизайн</span></p>
+                {% endif %}
+            </div>
+            <div class="form-none">
+                <input type="hidden" name={% url 'action-chat' chat.id 'members_list' %} class="members_list"> 
+                <input type="hidden" name={% url 'action-chat' chat.id 'members_add_list' %} class="members_add_list">
+                <input type="hidden" name={% url 'action-member' chat.id 'add_user' '0' %} class="new_user">
+                <input type="hidden" name={% url 'action-member' chat.id 'remove_user' '0' %} class="remove_user">
+            </div>
+        </div>
+        <div class="chat_body">
+            {% for message in chat.recipient.all %}
+                <div class="message">
+                    <img src="{{message.sender.photo.url}}" alt="" class="user_photo">
+                    <div class="message_info">
+                        <a href="">{{message.sender.get_full_name}}:</a>
+                        <span>{{message.date}}</span>
+                    </div>
+                    <div class="message_text">
+                        <div>{{message.content}}</div>
+                        {% if message.attached_file %}
+                            <img src="{{message.attached_file.url}}" alt="" class="message_photo">
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <form action="{% url 'action-chat' chat.id 'create' %}" class="form" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="area">
+                <i class="fas fa-file-upload"></i>
+                <textarea name="content" placeholder="Отправить сообщение..."></textarea>
+            </div>
+            <input name="attached_file" type="file" class="file_down">
+            <button><i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+</div>

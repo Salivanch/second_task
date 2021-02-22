@@ -275,6 +275,14 @@ nav .user_wrapper {
   padding: 20px 0px;
 }
 
+.chat_list .chat_menu {
+  display: none;
+}
+
+.chat_list .fa-align-justify {
+  display: none;
+}
+
 .chat_list .last_message {
   position: absolute;
   top: 33px;
@@ -310,6 +318,14 @@ nav .user_wrapper {
   right: 32px;
   width: 494px;
   height: 1px;
+}
+
+.chat_list .chat_detal .chat_line a {
+  display: none;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-top: 20px;
 }
 
 .chat_list .chat_info {
@@ -560,6 +576,11 @@ nav .user_wrapper {
   width: 100% !important;
   bottom: -53px !important;
   right: 0 !important;
+  cursor: context-menu;
+}
+
+.chat_line_new a {
+  display: block !important;
 }
 
 .marginBottom-80 {
@@ -825,5 +846,41 @@ h1 {
   width: 310px;
   text-align: center;
   color: #a37019;
+}
+
+.full-chat {
+  margin-top: 6px;
+  background: #fff;
+}
+
+.full-chat .fa-align-justify {
+  display: block !important;
+  cursor: pointer;
+}
+
+.full-chat .chat_header {
+  position: relative;
+  border-radius: inherit !important;
+  cursor: context-menu !important;
+}
+
+.full-chat .chat_new {
+  display: none !important;
+}
+
+.full-chat .chat_messages {
+  display: block !important;
+}
+
+.full-chat .chat_body {
+  height: 80vh !important;
+}
+
+.full-chat .chat_messages .message .message_photo {
+  max-width: 500px !important;
+}
+
+.full-chat .chat_line {
+  display: none !important;
 }
 /*# sourceMappingURL=style.css.map */
