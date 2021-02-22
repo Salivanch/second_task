@@ -170,3 +170,4 @@ DJOSER = {
 
 
 AUTH_USER_MODEL = 'user.User'
+LOGIN_URL = 'auntificate'

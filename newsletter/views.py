@@ -6,9 +6,9 @@ from user.models import Profile
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class NewsList(ListView):
+class NewsList(LoginRequiredMixin, ListView):
     model = News
     template_name = "newsletter/newslist.html"
     context_object_name = "news"

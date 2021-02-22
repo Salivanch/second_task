@@ -7,6 +7,7 @@ from datetime import datetime
 from .service import get_users
 from django.http import JsonResponse
 from user.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class ChatDetail(DeleteView):
@@ -15,7 +16,7 @@ class ChatDetail(DeleteView):
     context_object_name = 'chat'
 
 
-class ChatList(View):
+class ChatList(LoginRequiredMixin, View):
     model = Chat
     template_name = "chat/chatlist.html"
     context_object_name = 'chats'
@@ -42,7 +43,6 @@ class FindChat(ChatList):
         queryset2 = self.model.objects.filter(members__first_name=chat[0], members__last_name=chat[1],members__in=[self.request.user])
         queryset = queryset1 | queryset2
         return queryset
-
 
 
 class ActionChat(View):
