@@ -96,7 +96,9 @@ nav .user_wrapper {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  left: -12px;
+  background: rgba(146, 188, 241, 0.52);
+  left: -41px;
+  padding: 3px 0px 7px 25px;
 }
 
 .news {
@@ -392,6 +394,15 @@ nav .user_wrapper {
   cursor: pointer;
 }
 
+.chat_messages .chat_header_info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .chat_messages .chat_header img {
   width: 50px;
   border-radius: 50%;
@@ -403,9 +414,8 @@ nav .user_wrapper {
 }
 
 .chat_messages .chat_header i {
-  position: absolute;
-  right: 34px;
   font-size: 23px;
+  margin-right: 33px;
 }
 
 .chat_messages .chat_menu {
@@ -585,6 +595,10 @@ nav .user_wrapper {
 
 .marginBottom-80 {
   margin-bottom: 80px;
+}
+
+.marginLeft-42 {
+  margin-left: 42px;
 }
 
 .area {
@@ -859,7 +873,9 @@ h1 {
 }
 
 .full-chat .chat_header {
-  position: relative;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   border-radius: inherit !important;
   cursor: context-menu !important;
 }

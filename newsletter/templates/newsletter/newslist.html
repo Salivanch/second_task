@@ -32,10 +32,7 @@
                                                 <img src="{{record.user.photo.url}}" alt="">
                                             </div>
                                             <div class="info_text">
-                                                <a href="" class="user">{{record.user.get_full_name}}</a> 
-
-                                                {% comment %} add url to profile {% endcomment %}
-                                                
+                                                <a href="{% url 'profile' record.user.profile.slug %}" class="user">{{record.user.get_full_name}}</a> 
                                                 <span class="date">{{record.date}}</span>
                                             </div>
                                         </div>
@@ -77,12 +74,12 @@
                                                 <img src="{{comment.user.photo.url}}" alt="">
                                             </div>
                                             <div class="info_text">
-                                                <a href="" class="user">{{comment.user.get_full_name}}</a>
+                                                <a href="{% url 'profile' comment.user.profile.slug %}" class="user">{{comment.user.get_full_name}}</a>
                                                 <span class="date">{{comment.date}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="news_content">
+                                    <div class="news_content marginLeft-42">
                                         <div class="news_text">{{comment.content}}</div>
                                         {% if comment.attached_file %}
                                             <img src="{{comment.attached_file.url}}" alt="">

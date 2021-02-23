@@ -51,21 +51,23 @@
     </div>
     <div class="chat_messages">
         <div class="chat_header">
-            {% if chat.members.count == 1 %}
-                <img src="{{chat.members.all.0.photo.url}}">
-                <span>{{chat.members.all.0.get_full_name}}</span>
-            {% elif chat.members.count == 2 %}
-                {% if chat.members.all.0 == user %}
-                    <img src="{{chat.members.all.1.photo.url}}">
-                    <span>{{chat.members.all.1.get_full_name}}</span>
-                {% else %}
+            <div class="chat_header_info">
+                {% if chat.members.count == 1 and chat.was_group|is_false %}
                     <img src="{{chat.members.all.0.photo.url}}">
                     <span>{{chat.members.all.0.get_full_name}}</span>
+                {% elif chat.members.count == 2 and chat.was_group|is_false %}
+                    {% if chat.members.all.0 == user %}
+                        <img src="{{chat.members.all.1.photo.url}}">
+                        <span>{{chat.members.all.1.get_full_name}}</span>
+                    {% else %}
+                        <img src="{{chat.members.all.0.photo.url}}">
+                        <span>{{chat.members.all.0.get_full_name}}</span>
+                    {% endif %}
+                {% else %}
+                    <img src="{{chat.photo.url}}">
+                    <span>{{chat.title}}</span>
                 {% endif %}
-            {% else %}
-                <img src="{{chat.photo.url}}">
-                <span>{{chat.title}}</span>
-            {% endif %}
+            </div>
             <i class="fas fa-align-justify"></i>
         </div>
         <div class="chat_menu">
@@ -90,7 +92,7 @@
                 <div class="message">
                     <img src="{{message.sender.photo.url}}" alt="" class="user_photo">
                     <div class="message_info">
-                        <a href="">{{message.sender.get_full_name}}:</a>
+                        <a href="{% url 'profile' message.sender.profile.slug %}">{{message.sender.get_full_name}}:</a>
                         <span>{{message.date}}</span>
                     </div>
                     <div class="message_text">

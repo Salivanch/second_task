@@ -4,12 +4,25 @@ from .models import Profile, User
 from .forms import LoginForm, UserCreationForm
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
+from django.urls import reverse_lazy
+from django.http.response import HttpResponseRedirect
 
 
 class ProfileDetail(DetailView):
     model = Profile
     template_name="user/profile.html"
     context_object_name = 'profile'
+
+
+class InFriend(View):
+    def get(self, request, user_id):
+        #Временно автоматическое добавление
+        user = self.request.user
+        friend = User.objects.get(id=user_id)
+        user.profile.friends.add(friend)
+        friend.profile.friends.add(user)
+        return HttpResponseRedirect(reverse_lazy('profile', kwargs={'slug': friend.profile.slug}))
+
 
 
 class Auntificate(View):

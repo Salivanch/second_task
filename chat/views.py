@@ -71,8 +71,6 @@ class FindChat(ChatList):
 
 
 class ActionChat(View):
-    success_url = reverse_lazy('chatlist')
-
     def get(self, request, id, move, ans={}):
         try:
             chat = Chat.objects.get(id=id)
@@ -99,13 +97,10 @@ class ActionChat(View):
             file = request.FILES.get('attached_file')
         content = request.POST.get('content')
         user = self.request.user
-        if chat.recipient.all() == 0:
-            #логика добавления в список собеседников
-            pass
         Message(recipient=chat, sender=user, content=content, attached_file=file).save()
         chat.last_message = datetime.now()
         chat.save()
-        return HttpResponseRedirect(self.success_url)   
+        return HttpResponseRedirect(reverse_lazy('chatdetail', kwargs={'slug': chat.slug}))
 
 
 class ActionMembers(View):
@@ -123,7 +118,7 @@ class ActionMembers(View):
         if move=="add_user":
             user = User.objects.get(id=user_id)
             chat.members.add(user)
-            if chat.members.count>2:
+            if len(chat.members.all())>2:
                 chat.was_group = True
             chat.save()
         return JsonResponse(ans)

@@ -2,4 +2,7 @@
     {% block content %}
         <h1>{{profile}}</h1>
         <a href="{% url 'getchat' profile.user.id %}">Отправить сообщение</a>
+        {% if profile.user not in user.profile.friends.all and profile.user != user %}
+            <a href="{% url 'in-friend' profile.user.id %}">Добавить в друзья</a>
+        {% endif %}
     {% endblock %}

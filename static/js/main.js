@@ -130,13 +130,16 @@ try{ //news + messenger
     //Показать комментарии при нажатии на иконку
     let btn_comment = document.querySelectorAll('.comment_stats');
     btn_comment.forEach((item)=>{
-        item.onclick=()=>{
-            let parent = item.closest('.news_detal'),
-                block = parent.querySelector('.news_comment')
-            if (block.style.display == "block")
-                block.style.display = ""
-            else
-                block.style.display = "block";
+        let count = item.querySelector('span').textContent
+        if (count > 0){
+            item.onclick=()=>{
+                let parent = item.closest('.news_detal'),
+                    block = parent.querySelector('.news_comment')
+                if (block.style.display == "block")
+                    block.style.display = ""
+                else
+                    block.style.display = "block";
+            }
         }
     })
 }
@@ -222,20 +225,20 @@ try{ //messenger/chat/<slug>
         closeButton = document.querySelectorAll('.js-modal-close');
 
     list_members.onclick=(e)=>{
-        getMembers(modal[0],e)
+        getMembers(e)
         modal[0].classList.add('add');
         overlay.classList.add('add');
         document.querySelector('body').style.overflowY="hidden"
     }; 
 
     new_member.onclick=(e)=>{
-        newMember(modal[1],e)
-        modal[1].classList.add('add');
+        newMember(e)
+        modal[0].classList.add('add');
         overlay.classList.add('add');
         document.querySelector('body').style.overflowY="hidden"
     }; 
 
-    closeButton.forEach((item,i)=>{
+    closeButton.forEach((item)=>{
         item.onclick=()=>{
             modal[0].classList.remove('add');
             modal[1].classList.remove('add');
@@ -253,7 +256,10 @@ try{ //messenger/chat/<slug>
 
 
     //Отправить запрос на получение списка участников беседы
-    function getMembers(modal, event){
+    function getMembers(event){
+        let modal = document.querySelector('.modal'),
+            title = modal.querySelector('.modal__title');
+        title.textContent = "Участники беседы:";
         //Получение ссылки на запрос
         let block = document.querySelector('.form-none'),
             form = block.querySelector('.members_list'),
@@ -284,7 +290,10 @@ try{ //messenger/chat/<slug>
 
 
     //Отправить запрос на получение списка участников для добавления
-    function newMember(modal, event){
+    function newMember(event){
+        let modal = document.querySelector('.modal'),
+            title = modal.querySelector('.modal__title');
+        title.textContent = "Добавить участника:";
         //Получение ссылки на запрос
         let block = document.querySelector('.form-none'),
             form = block.querySelector('.members_add_list'),

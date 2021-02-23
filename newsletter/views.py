@@ -15,7 +15,8 @@ class NewsList(LoginRequiredMixin, ListView):
     
     def get_queryset(self):
         user_profile = Profile.objects.get(user=self.request.user)
-        user_friends = user_profile.interlocutors.all()
+        user_friends = list(user_profile.friends.all())
+        user_friends.append(self.request.user)
         parseBD()
         queryset1 = News.objects.filter(user__in=user_friends)
         queryset2 = News.objects.filter(user__isnull=True)

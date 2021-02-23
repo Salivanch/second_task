@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, verbose_name="Пользователь", on_delete=models.CASCADE, related_name="profile")
-    interlocutors = models.ManyToManyField(User, verbose_name="Собеседники", related_name="friends", blank=True)
+    friends = models.ManyToManyField(User, verbose_name="Друзья", related_name="friends", blank=True)
     slug = models.SlugField("Ссылка на профиль", unique=True, blank=True)
 
     def __str__(self):
@@ -86,7 +86,7 @@ class Profile(models.Model):
     
     def save(self, *args, **kwards):
         if not self.slug:
-            self.slug = slugify(self.user.login)
+            self.slug = slug_generator()
             while Profile.objects.filter(slug=self.slug).exists():
                 self.slug = slug_generator()
         super().save(*args, **kwards)
@@ -100,3 +100,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = "Профиль"
         verbose_name_plural = "Профиля"
+
+
+class FriendRequest(models.Model):
+    pass
