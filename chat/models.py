@@ -10,6 +10,8 @@ class Chat(models.Model):
     members = models.ManyToManyField(User, verbose_name="Участники чата")
     slug = models.SlugField("Ссылка на чат", unique=True, blank=True)
     last_message = models.DateTimeField("Последнее сообщение", blank=True, null=True)
+    was_group = models.BooleanField("Было больше 2-х пользователей", default=False)
+
 
     class Meta:
         verbose_name = "Чат"

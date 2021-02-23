@@ -42,11 +42,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    login = models.CharField("Логин", max_length=30, unique=True, blank=True)
     email = models.EmailField('Почта', unique=True)
-    first_name = models.CharField('Имя', max_length=30, blank=True)
-    last_name = models.CharField('Фамилия', max_length=30, blank=True)
-    patronymic = models.CharField('Отчество', max_length= 30, blank=True)
+    first_name = models.CharField('Имя', max_length=30, blank=True, default="Анонимный")
+    last_name = models.CharField('Фамилия', max_length=30, blank=True, default="пользователь")
     photo = models.ImageField("Фото пользователя", upload_to="user", default="user/user.png", blank=True)
     bithday = models.DateTimeField("Дата рождения", null=True, blank=True)
     date_joined = models.DateTimeField('Дата регистрации', auto_now_add=True)
@@ -63,40 +61,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'Пользователи'
 
     def get_full_name(self):
-        '''
-        Returns the first_name plus the last_name, with a space in between.
-        '''
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
-
-    # def get_profile(self):
-    #     profile = Profile.objects.get(user__id=self.id)
-    #     return profile.get_absolute_url()
-
-    def get_short_name(self):
-        '''
-        Returns the short name for the user.
-        '''
-        return self.first_name
-
-
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        '''
-        Sends an email to this User.
-        '''
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+        full_name = f"{self.first_name} {self.last_name}"
+        return full_name
 
     def save(self, *args, **kwards):
-        if not self.login:
-            self.login = self.email.split("@")[0]
-            while User.objects.filter(login=self.login).exists():
-                self.login = slug_generator()
         super().save(*args, **kwards)
         if self.photo:
             image = resize_photo(self.photo.path)
 
     def __str__(self):
-        return f"{self.login}"
+        return f"{self.get_full_name()}"
 
 
 class Profile(models.Model):
@@ -112,7 +86,6 @@ class Profile(models.Model):
     
     def save(self, *args, **kwards):
         if not self.slug:
-            print(self.user.login)
             self.slug = slugify(self.user.login)
             while Profile.objects.filter(slug=self.slug).exists():
                 self.slug = slug_generator()

@@ -8,6 +8,28 @@ from .service import get_users
 from django.http import JsonResponse
 from user.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http.response import HttpResponseRedirect
+from django.db.models import Count, Q, F
+
+
+class GetChat(View):
+    def get(self, request, user_id):
+        friend = User.objects.get(id=user_id)
+        user = self.request.user
+        if friend == user:
+            count = 1
+        else:
+            count = 2
+        chat = Chat.objects.annotate (nmembers = Count ('members', filter = Q (members__in = [user, friend])), 
+                allmem = Count ('members')). filter (nmembers = count, allmem = count)
+        if not chat.exists():
+            chat = Chat.objects.create()
+            chat.members.add(friend)
+            chat.members.add(user)
+            chat.save()
+        else:
+            chat = chat.first()
+        return HttpResponseRedirect(reverse_lazy('chatdetail', kwargs={'slug': chat.slug}))
 
 
 class ChatDetail(DeleteView):
@@ -27,6 +49,7 @@ class ChatList(LoginRequiredMixin, View):
 
     def get_queryset(self):
         queryset = self.model.objects.filter(members__in=[self.request.user])
+        queryset = queryset.annotate(messages=Count('recipient')).filter(messages__gt=0)
         queryset = queryset.order_by('-last_message')
         return queryset
 
@@ -42,6 +65,8 @@ class FindChat(ChatList):
         chat_list = chat.split(" ")
         queryset2 = self.model.objects.filter(members__first_name=chat[0], members__last_name=chat[1],members__in=[self.request.user])
         queryset = queryset1 | queryset2
+        queryset = queryset.annotate(messages=Count('recipient')).filter(messages__gt=0)
+        queryset = queryset.order_by('-last_message')
         return queryset
 
 
@@ -74,6 +99,9 @@ class ActionChat(View):
             file = request.FILES.get('attached_file')
         content = request.POST.get('content')
         user = self.request.user
+        if chat.recipient.all() == 0:
+            #логика добавления в список собеседников
+            pass
         Message(recipient=chat, sender=user, content=content, attached_file=file).save()
         chat.last_message = datetime.now()
         chat.save()
@@ -95,5 +123,7 @@ class ActionMembers(View):
         if move=="add_user":
             user = User.objects.get(id=user_id)
             chat.members.add(user)
+            if chat.members.count>2:
+                chat.was_group = True
             chat.save()
         return JsonResponse(ans)

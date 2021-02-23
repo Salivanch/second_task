@@ -1,16 +1,18 @@
+{% load poll_extras %}
+
 <div class="chat_detal">
     <div class="chat_wrapper">
         <div class="chat_new">
             <div class="chat_info">
                 <div class="chat_wrapper">
-                    {% if chat.members.count == 1 %}
+                    {% if chat.members.count == 1 and chat.was_group|is_false %}
                         <div class="chat_photo">
                             <img src="{{chat.members.all.0.photo.url}}">
                         </div>
                         <div class="info_text">
                             <div class="user">{{chat.members.all.0.get_full_name}}</div>
                         </div>
-                    {% elif chat.members.count == 2 %}
+                    {% elif chat.members.count == 2 and chat.was_group|is_false %}
                         {% if chat.members.all.0 == user %}
                             <div class="chat_photo">
                                 <img src="{{chat.members.all.1.photo.url}}">
